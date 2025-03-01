@@ -1,4 +1,4 @@
-#include "Game.h"
+/* #include "Game.h"
 
 int main(int argc, char* argv[]) {
     Game game;
@@ -6,3 +6,6 @@ int main(int argc, char* argv[]) {
     game.run();
     return 0;
 }
+ */
+
+ cout<<"hello";
