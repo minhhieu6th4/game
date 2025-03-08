@@ -1,32 +1,27 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef game_H
+#define game_H
 
 #include <SDL.h>
-#include <SDL_image.h>
-#include <vector>
-#include "Card.h"
+#include <iostream>
 
-class Game {
+using namespace std;
+
+class Game
+{
 public:
-    Game();
-    ~Game();
-
-    bool init();
-    void run();
-    void close();
-
-private:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    std::vector<Card*> cards;
-
-    Card* firstCard;
-    Card* secondCard;
-
-    void loadCards();
-    void handleEvents();
-    void update();
-    void render();
+	Game() {}
+	void render() {}
+	void run() {}
+	~Game() {}
+	SDL_Window* window;
+	SDL_Renderer* renderer;
+	bool running;
 };
+
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
+const int TILE_SIZE = 40;
+const int MAP_WIDTH = SCREEN_WIDTH/ TILE_SIZE;
+const int MAP_HEIGHT = SCREEN_HEIGHT/ TILE_SIZE;
 
 #endif

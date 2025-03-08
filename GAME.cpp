@@ -1,103 +1,55 @@
-#include "Game.h"
-#include <iostream>
-#include <algorithm>
+#include "game.h"
 
-Game::Game() : window(nullptr), renderer(nullptr), firstCard(nullptr), secondCard(nullptr) {}
+using namespace std;
 
-Game::~Game() {
-    close();
-}
+Game:: Game()
+   {
+        running = true;
+        if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+            cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
+            running = false;
+        }
 
-bool Game::init() {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) return false;
-    window = SDL_CreateWindow("Memory Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
-    if (!window) return false;
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) return false;
+        window = SDL_CreateWindow("Battle City", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                  SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        if (!window) {
+            cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << endl;
+            running = false;
+        }
 
-    loadCards();
-    return true;
-}
-
-void Game::loadCards() {
-    SDL_Surface* backSurface = IMG_Load("bg2.png");
-    SDL_Texture* backTexture = SDL_CreateTextureFromSurface(renderer, backSurface);
-    SDL_FreeSurface(backSurface);
-
-    for (int i = 0; i < 6; ++i) {
-        SDL_Surface* frontSurface = IMG_Load(("card" + std::to_string(i) + ".png").c_str());
-        SDL_Texture* frontTexture = SDL_CreateTextureFromSurface(renderer, frontSurface);
-        SDL_FreeSurface(frontSurface);
-
-        cards.push_back(new Card(100 * (i % 3) + 50, 100 * (i / 3) + 50, frontTexture, backTexture));
-        cards.push_back(new Card(100 * (i % 3) + 200, 100 * (i / 3) + 50, frontTexture, backTexture));
-    }
-
-    std::random_shuffle(cards.begin(), cards.end());
-}
-
-void Game::handleEvents() {
-    SDL_Event e;
-    while (SDL_PollEvent(&e)) {
-        if (e.type == SDL_QUIT) return;
-
-        if (e.type == SDL_MOUSEBUTTONDOWN) {
-            int x = e.button.x, y = e.button.y;
-
-            for (auto& card : cards) {
-                if (!card->isFlipped() && card->isClicked(x, y)) {
-                    card->flip();
-                    if (!firstCard) {
-                        firstCard = card;
-                    } else if (!secondCard) {
-                        secondCard = card;
-                    }
-                    break;
-                }
-            }
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        if (!renderer) {
+            cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << endl;
+            running = false;
         }
     }
-}
 
-void Game::update() {
-    if (firstCard && secondCard) {
-        SDL_Delay(500);
-        if (firstCard->getFrontTexture() == secondCard->getFrontTexture()) {
-            firstCard->setMatched();
-            secondCard->setMatched();
-        } else {
-            firstCard->flip();
-            secondCard->flip();
-        }
-        firstCard = nullptr;
-        secondCard = nullptr;
-    }
-}
+    void render()
+	{
+    	SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255); // boundaries
+    	SDL_RenderClear(renderer); // delete color
 
-void Game::render() {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
+    	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    	for (int i = 1; i < MAP_HEIGHT - 1; ++i) {
+        	for (int j = 1; j < MAP_WIDTH - 1; ++j) {
+            	SDL_Rect tile = { j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE };
+            	SDL_RenderFillRect(renderer, &tile);
+        	}
+    	}
+    	SDL_RenderPresent(renderer);
+	}
 
-    for (auto& card : cards) {
-        card->render(renderer);
-    }
+	void run()
+	{
+		while running
+		{
+			render();
+			SDL_Delay(16);
+		}
+	}
 
-    SDL_RenderPresent(renderer);
-}
+	~Game()
+	{
+		SDL_DestroyRenderer(renderer);
 
-void Game::run() {
-    bool running = true;
-    while (running) {
-        handleEvents();
-        update();
-        render();
-        SDL_Delay(16);
-    }
-}
-
-void Game::close() {
-    for (auto& card : cards) delete card;
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-}
+	}

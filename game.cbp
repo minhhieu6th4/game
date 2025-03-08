@@ -32,23 +32,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="2.png" />
-		<Unit filename="BaseObject.cpp" />
-		<Unit filename="BaseObject.h" />
-		<Unit filename="GAME.cpp" />
-		<Unit filename="GAME.h" />
-		<Unit filename="background.png" />
-		<Unit filename="bg2.png">
-			<Option compile="1" />
-		</Unit>
-		<Unit filename="card.cpp" />
-		<Unit filename="card.h" />
-		<Unit filename="card1.png" />
-		<Unit filename="commonfunc.cpp" />
-		<Unit filename="commonfunc.h" />
+		<Unit filename="game.cpp" />
+		<Unit filename="game.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="texture.cpp" />
-		<Unit filename="texture.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
