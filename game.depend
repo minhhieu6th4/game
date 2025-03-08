@@ -1,3 +1,23 @@
 # depslib dependency file v1.0
-1741360930 source:d:\codec\game\main.cpp
+1741405394 source:d:\codec\game\main.cpp
+	<iostream>
+	<SDL.h>
+	"game.h"
+
+1741413195 source:d:\codec\game\game.cpp
+	"game.h"
+
+1741413156 d:\codec\game\game.h
+	<SDL.h>
+	<iostream>
+	<vector>
+	"map.h"
+
+1741413295 d:\codec\game\map.h
+	<SDL.h>
+	<iostream>
+
+1741412955 source:d:\codec\game\map.cpp
+	"map.h"
+	"game.h"
 

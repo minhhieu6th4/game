@@ -1,18 +1,22 @@
-#ifndef game_H
-#define game_H
+#ifndef GAME_H
+#define GAME_H
 
 #include <SDL.h>
 #include <iostream>
+#include <vector>
+#include "map.h"
 
 using namespace std;
 
 class Game
 {
 public:
-	Game() {}
-	void render() {}
-	void run() {}
-	~Game() {}
+	Game();
+	void render();
+	void run();
+	vector <Wall> walls;
+	void generateWall();
+	~Game();
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	bool running;
