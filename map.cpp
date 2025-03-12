@@ -19,3 +19,5 @@ void Wall :: render(SDL_Renderer* renderer)
         SDL_RenderFillRect(renderer, &rect);
     }
 }
+
+

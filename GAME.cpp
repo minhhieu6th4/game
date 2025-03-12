@@ -25,6 +25,12 @@ Game:: Game()
         cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << endl;
         running = false;
     }
+    if (!renderer)
+    {
+        cerr << "Renderer could not be created! SDL_Error: ";
+        running = false;
+    }
+    generateWall();
 }
 
 void Game :: render()
@@ -55,11 +61,11 @@ void Game :: run()
 
 void Game :: generateWall()
 {
-    for (int i = 3; i < MAP_HEIGHT - 3; i += 2)
+    for ( int i = 3; i < MAP_HEIGHT - 3; i+=2)
     {
-        for (int j = 3; j < MAP_WIDTH - 3; j += 2)
+        for ( int j = 3; j < MAP_WIDTH - 3 ; j+=2)
         {
-            Wall w = Wall(j * TILE_SIZE, i * TILE_SIZE);
+            Wall w = Wall(j*TILE_SIZE , i*TILE_SIZE);
             walls.push_back(w);
         }
     }

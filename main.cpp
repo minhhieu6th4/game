@@ -1,5 +1,4 @@
 #include <iostream>
-#include <SDL.h>
 #include "game.h"
 
 using namespace std;
