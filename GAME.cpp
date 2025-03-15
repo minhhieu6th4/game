@@ -47,6 +47,12 @@ void Game :: render()
             SDL_RenderFillRect(renderer, &tile);
         }
     }
+
+    for ( int i = 0; i<walls.size() ; i++)
+        {
+            walls[i].render(renderer);
+        }
+
     SDL_RenderPresent(renderer);
 }
 
