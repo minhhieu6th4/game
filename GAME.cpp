@@ -1,4 +1,5 @@
 #include "game.h"
+#include "player.h"
 
 using namespace std;
 
@@ -31,6 +32,8 @@ Game:: Game()
         running = false;
     }
     generateWall();
+
+    player = PlayerTank(((MAP_WIDTH - 1) / 2 ) * TILE_SIZE , ((MAP_HEIGHT - 1) / 2 ) * TILE_SIZE);
 }
 
 void Game :: render()

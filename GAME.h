@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include "map.h"
+#include "player.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ public:
 	void render();
 	void run();
 	vector <Wall> walls;
+	PlayerTank player;
 	void generateWall();
 	~Game();
 	SDL_Window* window;

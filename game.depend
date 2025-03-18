@@ -3,14 +3,16 @@
 	<iostream>
 	"game.h"
 
-1742009034 source:d:\codec\game\game.cpp
+1742281403 source:d:\codec\game\game.cpp
 	"game.h"
+	"player.h"
 
-1741789437 d:\codec\game\game.h
+1742281576 d:\codec\game\game.h
 	<SDL.h>
 	<iostream>
 	<vector>
 	"map.h"
+	"player.h"
 
 1741789437 d:\codec\game\map.h
 	<SDL.h>
@@ -18,5 +20,11 @@
 
 1741789437 source:d:\codec\game\map.cpp
 	"map.h"
+	"game.h"
+
+1742280126 source:d:\codec\game\player.cpp
+	"player.h"
+
+1742280991 d:\codec\game\player.h
 	"game.h"
 
