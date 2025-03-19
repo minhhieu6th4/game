@@ -1,9 +1,13 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "game.h"
+#include "map.h"
 
 using namespace std;
+
+class Game;
+
+class Wall;
 
 class PlayerTank
 {

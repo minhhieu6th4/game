@@ -1,7 +1,8 @@
 #include "game.h"
-#include "player.h"
 
 using namespace std;
+
+
 
 Game:: Game()
 {
@@ -33,7 +34,41 @@ Game:: Game()
     }
     generateWall();
 
-    player = PlayerTank(((MAP_WIDTH - 1) / 2 ) * TILE_SIZE , ((MAP_HEIGHT - 1) / 2 ) * TILE_SIZE);
+    //player = PlayerTank(((MAP_WIDTH - 1) / 2 ) * TILE_SIZE , ((MAP_HEIGHT - 1) / 2 ) * TILE_SIZE);
+}
+
+void Game :: generateWall()
+{
+    for ( int i = 3; i < MAP_HEIGHT - 3; i+=2)
+    {
+        for ( int j = 3; j < MAP_WIDTH - 3 ; j+=2)
+        {
+            Wall w = Wall(j*TILE_SIZE , i*TILE_SIZE);
+            walls.push_back(w);
+        }
+    }
+}
+
+void Game :: handleEvents()
+{
+    SDL_Event event;
+    while ( SDL_PollEvent(&event))
+    {
+        if ( event.type == SDL_QUIT)
+        {
+            running = false;
+        }
+        else if ( event.type == SDL_KEYDOWN)
+        {
+            switch (event.key.keysym.sym)
+            {
+                case SDLK_UP : player.move(0,-5,walls); break;
+                case SDLK_DOWN : player.move(0,5,walls); break;
+                case SDLK_LEFT : player.move(-5,0,walls); break;
+                case SDLK_RIGHT : player.move(5,0,walls); break;
+            }
+        }
+    }
 }
 
 void Game :: render()
@@ -56,6 +91,8 @@ void Game :: render()
             walls[i].render(renderer);
         }
 
+    player.render(renderer);
+
     SDL_RenderPresent(renderer);
 }
 
@@ -64,19 +101,8 @@ void Game :: run()
     while (running)
     {
         render();
+        handleEvents();
         SDL_Delay(16);
-    }
-}
-
-void Game :: generateWall()
-{
-    for ( int i = 3; i < MAP_HEIGHT - 3; i+=2)
-    {
-        for ( int j = 3; j < MAP_WIDTH - 3 ; j+=2)
-        {
-            Wall w = Wall(j*TILE_SIZE , i*TILE_SIZE);
-            walls.push_back(w);
-        }
     }
 }
 
@@ -86,3 +112,4 @@ Game :: ~Game()
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
+

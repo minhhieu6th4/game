@@ -1,30 +1,42 @@
 # depslib dependency file v1.0
-1741787842 source:d:\codec\game\main.cpp
-	<iostream>
+1742395904 source:d:\codec\game\main.cpp
 	"game.h"
 
-1742281403 source:d:\codec\game\game.cpp
+1742394799 source:d:\codec\game\game.cpp
 	"game.h"
-	"player.h"
 
-1742281576 d:\codec\game\game.h
+1742395547 d:\codec\game\game.h
 	<SDL.h>
 	<iostream>
 	<vector>
 	"map.h"
 	"player.h"
 
-1741789437 d:\codec\game\map.h
-	<SDL.h>
+1742393796 d:\codec\game\map.h
 	<iostream>
+	<SDL.h>
+	<vector>
 
-1741789437 source:d:\codec\game\map.cpp
+1742393796 source:d:\codec\game\map.cpp
 	"map.h"
 	"game.h"
 
-1742280126 source:d:\codec\game\player.cpp
+1742395039 source:d:\codec\game\player.cpp
+	"player.h"
+	"game.h"
+
+1742393796 d:\codec\game\player.h
+	"map.h"
+
+1742309358 d:\codec\game\tong.h
+	"map.h"
 	"player.h"
 
-1742280991 d:\codec\game\player.h
-	"game.h"
+1742309228 source:d:\codec\game\tong.cpp
+	"tong.h"
+
+1742310510 d:\codec\game\const.h
+
+1742310512 source:d:\codec\game\const.cpp
+	"const.h"
 

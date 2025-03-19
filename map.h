@@ -1,8 +1,9 @@
 #ifndef WALL_H
 #define WALL_H
 
-#include <SDL.h>
 #include <iostream>
+#include <SDL.h>
+#include <vector>
 
 class Wall
 {

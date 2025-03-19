@@ -1,4 +1,5 @@
 #include "player.h"
+#include "game.h"
 
 using namespace std;
 
@@ -8,7 +9,7 @@ PlayerTank :: PlayerTank( int startX , int startY)
  	y = startY;
  	rect = {x, y, TILE_SIZE, TILE_SIZE};
  	dirX = 0;
- 	dirY = -1;
+ 	dirY = 0;
  }
 
  void PlayerTank :: render (SDL_Renderer* renderer)
