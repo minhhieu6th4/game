@@ -1,5 +1,6 @@
 #include "player.h"
 #include "game.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -12,11 +13,15 @@ PlayerTank :: PlayerTank( int startX , int startY)
  	dirY = 0;
  }
 
- void PlayerTank :: render (SDL_Renderer* renderer)
+ /*void PlayerTank :: render (SDL_Renderer* renderer)
  {
  	SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
  	SDL_RenderFillRect(renderer, &rect);
- }
+ 	for (auto &bullet : bullets)
+    {
+        bullet.render(renderer);
+    }
+ }*/
 
  void PlayerTank :: move(int dx, int dy, const vector<Wall> &walls)
  {
@@ -43,3 +48,28 @@ PlayerTank :: PlayerTank( int startX , int startY)
  		rect.y = y;
  	}
  }
+
+ void PlayerTank :: shoot()
+ {
+     bullets.push_back(Bullet(x+TILE_SIZE/2 -5 , y+TILE_SIZE/2 -5, this-> dirX , this-> dirY));
+ }
+
+ void PlayerTank ::updateBullets()
+ {
+     for ( auto &bullet : bullets)
+     {
+         bullet.move();
+     }
+     bullets.erase(remove_if(bullets.begin(), bullets.end() , [](Bullet &b) {return !b.active; }) , bullets.end());
+ }
+
+ void PlayerTank ::render(SDL_Renderer *renderer)
+ {
+     SDL_SetRenderDrawColor(renderer,255,255,0,255);
+     SDL_RenderFillRect(renderer, &rect);
+     for (auto &bullet : bullets)
+     {
+         bullet.render(renderer);
+     }
+ }
+

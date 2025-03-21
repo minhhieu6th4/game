@@ -1,4 +1,5 @@
 #include "game.h"
+#include "bullet.h"
 
 using namespace std;
 
@@ -66,7 +67,23 @@ void Game :: handleEvents()
                 case SDLK_DOWN : player.move(0,5,walls); break;
                 case SDLK_LEFT : player.move(-5,0,walls); break;
                 case SDLK_RIGHT : player.move(5,0,walls); break;
+                case SDLK_SPACE : player.shoot(); break;
             }
+        }
+    }
+}
+
+void Game ::update()
+{
+    player.updateBullets();
+
+    for (auto &bullet : player.bullets)
+    {
+        for (auto &wall : walls)
+        {
+            wall.active = false;
+            bullet.active = false;
+            break;
         }
     }
 }
@@ -101,6 +118,7 @@ void Game :: run()
     while (running)
     {
         render();
+        update();
         handleEvents();
         SDL_Delay(16);
     }

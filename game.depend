@@ -2,10 +2,11 @@
 1742395904 source:d:\codec\game\main.cpp
 	"game.h"
 
-1742394799 source:d:\codec\game\game.cpp
+1742569456 source:d:\codec\game\game.cpp
 	"game.h"
+	"bullet.h"
 
-1742395547 d:\codec\game\game.h
+1742569456 d:\codec\game\game.h
 	<SDL.h>
 	<iostream>
 	<vector>
@@ -21,12 +22,15 @@
 	"map.h"
 	"game.h"
 
-1742395039 source:d:\codec\game\player.cpp
+1742570244 source:d:\codec\game\player.cpp
 	"player.h"
 	"game.h"
+	<algorithm>
 
-1742393796 d:\codec\game\player.h
+1742570082 d:\codec\game\player.h
 	"map.h"
+	"bullet.h"
+	<vector>
 
 1742309358 d:\codec\game\tong.h
 	"map.h"
@@ -39,4 +43,12 @@
 
 1742310512 source:d:\codec\game\const.cpp
 	"const.h"
+
+1742569725 d:\codec\game\bullet.h
+	<SDL.h>
+	<iostream>
+
+1742569917 source:d:\codec\game\bullet.cpp
+	"bullet.h"
+	"game.h"
 
