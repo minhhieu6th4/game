@@ -14,12 +14,15 @@ public:
     int x,y;
     int dirX, dirY;
     SDL_Rect rect;
-    PlayerTank ( int startX , int startY);
     vector<Bullet> bullets;
+    PlayerTank ( int startX, int startY);
     void move(int dx, int dy, const vector<Wall> &walls);
     void render(SDL_Renderer* renderer);
     void shoot();
     void updateBullets();
+private:
+    Uint32 lastShotTime = 0; // Lưu thời gian lần bắn trước
+    const Uint32 shotCooldown = 500; // Thời gian chờ giữa 2 lần bắn (ms)
 
 };
 

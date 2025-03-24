@@ -13,7 +13,7 @@ public:
     int dx,dy;
     SDL_Rect rect;
     bool active;
-    Bullet( int StartX , int StartY , int dirX , int dirY);
+    Bullet(int StartX , int StartY , int dirX , int dirY);
     void move();
     void render(SDL_Renderer *renderer);
 };

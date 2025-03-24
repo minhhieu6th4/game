@@ -13,16 +13,6 @@ PlayerTank :: PlayerTank( int startX , int startY)
  	dirY = 0;
  }
 
- /*void PlayerTank :: render (SDL_Renderer* renderer)
- {
- 	SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
- 	SDL_RenderFillRect(renderer, &rect);
- 	for (auto &bullet : bullets)
-    {
-        bullet.render(renderer);
-    }
- }*/
-
  void PlayerTank :: move(int dx, int dy, const vector<Wall> &walls)
  {
  	int newX = x + dx;
@@ -49,10 +39,22 @@ PlayerTank :: PlayerTank( int startX , int startY)
  	}
  }
 
- void PlayerTank :: shoot()
- {
-     bullets.push_back(Bullet(x+TILE_SIZE/2 -5 , y+TILE_SIZE/2 -5, this-> dirX , this-> dirY));
- }
+void PlayerTank::shoot()
+{
+    Uint32 currentTime = SDL_GetTicks(); // Lấy thời gian hiện tại
+
+    if (currentTime - lastShotTime < shotCooldown)
+        return; // Nếu chưa đủ thời gian chờ, không bắn
+
+    lastShotTime = currentTime; // Cập nhật thời gian bắn mới
+
+    // Nếu chưa di chuyển, đặt hướng mặc định (bắn lên)
+    int bulletDirX = (dirX == 0 && dirY == 0) ? 0 : dirX;
+    int bulletDirY = (dirX == 0 && dirY == 0) ? -5 : dirY;
+
+    bullets.push_back(Bullet(x + TILE_SIZE / 2 - 5, y + TILE_SIZE / 2 - 5, bulletDirX, bulletDirY));
+}
+
 
  void PlayerTank ::updateBullets()
  {
@@ -60,7 +62,8 @@ PlayerTank :: PlayerTank( int startX , int startY)
      {
          bullet.move();
      }
-     bullets.erase(remove_if(bullets.begin(), bullets.end() , [](Bullet &b) {return !b.active; }) , bullets.end());
+     bullets.erase(remove_if(bullets.begin(), bullets.end() ,
+                              [](Bullet &b) {return !b.active; }) , bullets.end());
  }
 
  void PlayerTank ::render(SDL_Renderer *renderer)

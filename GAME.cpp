@@ -50,6 +50,28 @@ void Game :: generateWall()
     }
 }
 
+void Game::update()
+{
+    player.updateBullets();
+
+    for (auto &bullet : player.bullets)
+{
+    if (!bullet.active) continue; // Bỏ qua viên đạn đã tắt
+
+    for (auto &wall : walls)
+    {
+        if (wall.active && SDL_HasIntersection(&bullet.rect, &wall.rect))
+        {
+            wall.active = false;  // Chỉ vô hiệu hóa tường khi có va chạm
+            bullet.active = false; // Đạn cũng biến mất
+            break; // Dừng kiểm tra sau khi tìm thấy va chạm
+        }
+    }
+}
+
+}
+
+
 void Game :: handleEvents()
 {
     SDL_Event event;
@@ -73,7 +95,7 @@ void Game :: handleEvents()
     }
 }
 
-void Game ::update()
+/*void Game ::update()
 {
     player.updateBullets();
 
@@ -86,7 +108,7 @@ void Game ::update()
             break;
         }
     }
-}
+}*/
 
 void Game :: render()
 {
@@ -102,8 +124,8 @@ void Game :: render()
             SDL_RenderFillRect(renderer, &tile);
         }
     }
-
-    for ( int i = 0; i<walls.size() ; i++)
+        int a = walls.size();
+    for ( int i = 0; i<a ; i++)
         {
             walls[i].render(renderer);
         }
