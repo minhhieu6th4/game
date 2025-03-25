@@ -1,11 +1,11 @@
 #include "EnemyTank.h"
 #include "game.h"
+#include <algorithm>
 
 
 using namespace std;
 
-EnemyTank :: EnemyTank( int startX, int startY)
-{
+EnemyTank::EnemyTank(int startX, int startY) {
     moveDelay = 15;
     shootDelay = 5;
     x = startX;
@@ -14,7 +14,9 @@ EnemyTank :: EnemyTank( int startX, int startY)
     dirX = 0;
     dirY = 1;
     active = true;
+ //   lastShotTime = 0; // Khởi tạo thời gian bắn
 }
+
 
 void EnemyTank :: move(const vector<Wall>& walls)
 {
@@ -77,14 +79,14 @@ void EnemyTank :: shoot()
     bullets.push_back(Bullet(x + TILE_SIZE / 2 - 5, y + TILE_SIZE / 2 - 5, this->dirX, this->dirY));
 }
 
-void EnemyTank :: updateBullets()
-{
+void EnemyTank::updateBullets() {
     for ( auto &bullet : bullets)
     {
         bullet.move();
     }
-    bullets.push_back(Bullet(x + TILE_SIZE / 2 - 5, y + TILE_SIZE / 2 - 5, this->dirX, this->dirY));
+    bullets.erase(remove_if(bullets.begin(), bullets.end(), [] (Bullet &b ) {return !b.active;}), bullets.end());
 }
+
 
 void  EnemyTank ::render(SDL_Renderer* renderer)
 {

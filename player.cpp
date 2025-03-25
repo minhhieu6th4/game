@@ -21,7 +21,8 @@ PlayerTank :: PlayerTank( int startX , int startY)
  	this-> dirY = dy;
 
  	SDL_Rect newRect = {newX , newY , TILE_SIZE , TILE_SIZE};
- 	for ( int i = 0; i < walls.size() ; i++)
+ 	int len = walls.size();
+ 	for ( int i = 0; i < len ; i++)
  	{
  		if (walls[i].active && SDL_HasIntersection(&newRect, &walls[i].rect))
  		{
