@@ -6,6 +6,8 @@
 #include <vector>
 #include "map.h"
 #include "player.h"
+#include "EnemyTank.h"
+#include "bullet.h"
 
 using namespace std;
 
@@ -24,6 +26,9 @@ public:
 	void run();
 	vector <Wall> walls;
 	PlayerTank player = PlayerTank(((MAP_WIDTH - 1) / 3 ) * TILE_SIZE , ((MAP_HEIGHT - 1) / 3 ) * TILE_SIZE);
+	int enemyNumber = 3;
+	vector <EnemyTank> enemies;
+	void spawnEnemies();
 	void handleEvents();
 	void generateWall();
 	~Game();

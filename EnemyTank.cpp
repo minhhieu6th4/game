@@ -1,4 +1,6 @@
 #include "EnemyTank.h"
+#include "game.h"
+
 
 using namespace std;
 
@@ -46,7 +48,8 @@ void EnemyTank :: move(const vector<Wall>& walls)
  	int newY = y + this-> dirY;
 
  	SDL_Rect newRect = {newX , newY , TILE_SIZE , TILE_SIZE};
- 	for ( int i = 0; i < walls.size() ; i++)
+ 	int length = walls.size();
+ 	for ( int i = 0; i < length ; i++)
  	{
  		if (walls[i].active && SDL_HasIntersection(&newRect, &walls[i].rect))
  		{

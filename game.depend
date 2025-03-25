@@ -2,16 +2,18 @@
 1742395904 source:d:\codec\game\main.cpp
 	"game.h"
 
-1742657681 source:d:\codec\game\game.cpp
+1742891655 source:d:\codec\game\game.cpp
 	"game.h"
-	"bullet.h"
+	<algorithm>
 
-1742569456 d:\codec\game\game.h
+1742887677 d:\codec\game\game.h
 	<SDL.h>
 	<iostream>
 	<vector>
 	"map.h"
 	"player.h"
+	"EnemyTank.h"
+	"bullet.h"
 
 1742393796 d:\codec\game\map.h
 	<iostream>
@@ -27,7 +29,7 @@
 	"game.h"
 	<algorithm>
 
-1742656653 d:\codec\game\player.h
+1742891466 d:\codec\game\player.h
 	"map.h"
 	"bullet.h"
 	<vector>
@@ -51,4 +53,12 @@
 1742569917 source:d:\codec\game\bullet.cpp
 	"bullet.h"
 	"game.h"
+
+1742892483 source:d:\codec\game\enemytank.cpp
+	"EnemyTank.h"
+	"game.h"
+
+1742891791 d:\codec\game\enemytank.h
+	"bullet.h"
+	"map.h"
 

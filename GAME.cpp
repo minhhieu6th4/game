@@ -1,5 +1,5 @@
 #include "game.h"
-#include "bullet.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -34,8 +34,7 @@ Game:: Game()
         running = false;
     }
     generateWall();
-
-    //player = PlayerTank(((MAP_WIDTH - 1) / 2 ) * TILE_SIZE , ((MAP_HEIGHT - 1) / 2 ) * TILE_SIZE);
+    spawnEnemies();
 }
 
 void Game :: generateWall()
@@ -44,9 +43,34 @@ void Game :: generateWall()
     {
         for ( int j = 3; j < MAP_WIDTH - 3 ; j+=2)
         {
-            Wall w = Wall(j*TILE_SIZE , i*TILE_SIZE);
+            Wall w = Wall(j*TILE_SIZE, i*TILE_SIZE);
             walls.push_back(w);
         }
+    }
+}
+
+void Game :: spawnEnemies()
+{
+    enemies.clear();
+    for ( int i = 0 ; i < enemyNumber ; i++)
+    {
+        int ex,ey;
+        bool validPosition = false;
+        while (!validPosition)
+        {
+            ex = (rand() % (MAP_WIDTH - 2) + 1) * TILE_SIZE;
+            ey = (rand() % (MAP_HEIGHT - 2) +1) * TILE_SIZE;
+            validPosition = true;
+            for ( const auto& wall : walls)
+            {
+                if (wall.active && wall.x == ex && wall.y == ey)
+                {
+                    validPosition = false;
+                    break;
+                }
+            }
+        }
+        enemies.push_back(EnemyTank(ex,ey));
     }
 }
 
@@ -55,19 +79,61 @@ void Game::update()
     player.updateBullets();
 
     for (auto &bullet : player.bullets)
-{
-    if (!bullet.active) continue; // Bỏ qua viên đạn đã tắt
-
-    for (auto &wall : walls)
     {
-        if (wall.active && SDL_HasIntersection(&bullet.rect, &wall.rect))
+        if (!bullet.active) continue; // Bỏ qua viên đạn đã tắt
+
+        for (auto &wall : walls)
         {
-            wall.active = false;  // Chỉ vô hiệu hóa tường khi có va chạm
-            bullet.active = false; // Đạn cũng biến mất
-            break; // Dừng kiểm tra sau khi tìm thấy va chạm
+            if (wall.active && SDL_HasIntersection(&bullet.rect, &wall.rect))
+            {
+                wall.active = false;  // Chỉ vô hiệu hóa tường khi có va chạm
+                bullet.active = false; // Đạn cũng biến mất
+                break; // Dừng kiểm tra sau khi tìm thấy va chạm
+            }
+        }
+    }
+
+    for ( auto& enemy : enemies)
+    {
+        enemy.move(walls);
+        enemy.updateBullets();
+        if ( rand() % 100 < 2)
+        {
+            enemy.shoot();
+        }
+    }
+
+    for (auto& enemy : enemies) {
+    for (auto& bullet : enemy.bullets) {
+        for (auto& wall : walls) {
+            if (wall.active && SDL_HasIntersection(&bullet.rect, &wall.rect)) {
+                wall.active = false;
+                bullet.active = false;
+                break;
+            }
         }
     }
 }
+
+
+
+    enemies.erase(remove_if(enemies.begin(), enemies.end(), [](EnemyTank &e) { return !e.active; }), enemies.end());
+    if ( enemies.empty())
+    {
+        running = false;
+    }
+
+    for ( auto& enemy : enemies)
+    {
+        for ( auto& bullet : enemy.bullets)
+        {
+            if (SDL_HasIntersection(&bullet.rect, &player.rect))
+            {
+                running = false;
+                return;
+            }
+        }
+    }
 
 }
 
@@ -85,55 +151,52 @@ void Game :: handleEvents()
         {
             switch (event.key.keysym.sym)
             {
-                case SDLK_UP : player.move(0,-5,walls); break;
-                case SDLK_DOWN : player.move(0,5,walls); break;
-                case SDLK_LEFT : player.move(-5,0,walls); break;
-                case SDLK_RIGHT : player.move(5,0,walls); break;
-                case SDLK_SPACE : player.shoot(); break;
+            case SDLK_UP :
+                player.move(0,-5,walls);
+                break;
+            case SDLK_DOWN :
+                player.move(0,5,walls);
+                break;
+            case SDLK_LEFT :
+                player.move(-5,0,walls);
+                break;
+            case SDLK_RIGHT :
+                player.move(5,0,walls);
+                break;
+            case SDLK_SPACE :
+                player.shoot();
+                break;
             }
         }
     }
 }
 
-/*void Game ::update()
-{
-    player.updateBullets();
 
-    for (auto &bullet : player.bullets)
-    {
-        for (auto &wall : walls)
-        {
-            wall.active = false;
-            bullet.active = false;
-            break;
-        }
-    }
-}*/
-
-void Game :: render()
-{
+void Game :: render() {
     SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255); // boundaries
     SDL_RenderClear(renderer); // delete color
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    for (int i = 1; i < MAP_HEIGHT - 1; ++i)
-    {
-        for (int j = 1; j < MAP_WIDTH - 1; ++j)
-        {
+    for (int i = 1; i < MAP_HEIGHT - 1; ++i) {
+        for (int j = 1; j < MAP_WIDTH - 1; ++j) {
             SDL_Rect tile = { j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE };
             SDL_RenderFillRect(renderer, &tile);
         }
     }
-        int a = walls.size();
-    for ( int i = 0; i<a ; i++)
-        {
-            walls[i].render(renderer);
-        }
+
+    for (int i = 0; i < int(walls.size()); i++) {
+        walls[i].render(renderer);
+    }
 
     player.render(renderer);
 
+    for (auto &enemy : enemies) {
+        enemy.render(renderer);
+    }
+
     SDL_RenderPresent(renderer);
 }
+
 
 void Game :: run()
 {
