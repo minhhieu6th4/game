@@ -214,6 +214,7 @@ void Game :: handleEvents()
 }
 
 
+
 void Game :: render()
 {
     SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255); // boundaries

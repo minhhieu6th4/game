@@ -7,14 +7,13 @@ using namespace std;
 
 EnemyTank::EnemyTank(int startX, int startY) {
     moveDelay = 15;
-    shootDelay = 5;
+    shootDelay = 0;
     x = startX;
     y = startY;
     rect = {x,y,TILE_SIZE,TILE_SIZE};
     dirX = 0;
     dirY = 1;
     active = true;
- //   lastShotTime = 0; // Khởi tạo thời gian bắn
 }
 
 
@@ -38,13 +37,13 @@ void EnemyTank :: move(const vector<Wall>& walls)
     }
     else if ( r == 2)
     {
-        this->dirX = 0;
-        this->dirY = -5;
+        this->dirX = -5;
+        this->dirY = 0;
     }
     else if ( r == 3)
     {
-        this->dirX = 0;
-        this->dirY = 5;
+        this->dirX = 5;
+        this->dirY = 0;
     }
     int newX = x + this-> dirX;
  	int newY = y + this-> dirY;
@@ -75,7 +74,7 @@ void EnemyTank :: shoot()
     {
         return;
     }
-    shootDelay = 5;
+    shootDelay = 2;
     bullets.push_back(Bullet(x + TILE_SIZE / 2 - 5, y + TILE_SIZE / 2 - 5, this->dirX, this->dirY));
 }
 

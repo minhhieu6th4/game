@@ -4,6 +4,7 @@
 #include "map.h"
 #include "bullet.h"
 #include <vector>
+#include <SDL_image.h>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
     void render(SDL_Renderer* renderer);
     void shoot();
     void updateBullets();
+    double angle = 0.0;
 private:
     Uint32 lastShotTime = 0; // Lưu thời gian lần bắn trước
     const Uint32 shotCooldown = 500; // Thời gian chờ giữa 2 lần bắn (ms)
