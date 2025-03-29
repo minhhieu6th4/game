@@ -43,10 +43,6 @@
 		<Unit filename="map.h" />
 		<Unit filename="player.cpp" />
 		<Unit filename="player.h" />
-		<Unit filename="playerDown.png" />
-		<Unit filename="playerLeft.png" />
-		<Unit filename="playerRight.png" />
-		<Unit filename="playerUp.png" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

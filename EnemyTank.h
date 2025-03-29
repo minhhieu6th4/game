@@ -21,6 +21,7 @@ public:
     void shoot();
     void updateBullets();
     void render(SDL_Renderer* renderer);
+    double angle = 0.0;
 
   //  Uint32 lastShotTime; // Lưu thời gian bắn gần nhất
 

@@ -107,7 +107,10 @@ void Game::update()
     }
 
     // Xóa kẻ địch không hoạt động
-    enemies.erase(std::remove_if(enemies.begin(), enemies.end(),[](const EnemyTank &e) { return !e.active; }),enemies.end());
+    enemies.erase(std::remove_if(enemies.begin(), enemies.end(),[](const EnemyTank &e)
+    {
+        return !e.active;
+    }),enemies.end());
 
     // Kiểm tra va chạm giữa đạn của kẻ địch và người chơi
     for (auto& enemy : enemies)
@@ -116,6 +119,11 @@ void Game::update()
         {
             if (SDL_HasIntersection(&bullet.rect, &player.rect))
             {
+                SDL_Texture* imageTexture = IMG_LoadTexture(renderer, "lose.png");
+                SDL_RenderCopy(renderer, imageTexture, nullptr, nullptr);
+                SDL_DestroyTexture(imageTexture);
+                SDL_RenderPresent(renderer);
+                SDL_Delay(5000);
                 running = false;  // Kết thúc trò chơi
                 return;
             }
@@ -159,19 +167,31 @@ void Game::update()
 
     // Xóa tất cả đạn không còn hoạt động
     player.bullets.erase(std::remove_if(player.bullets.begin(), player.bullets.end(),
-                                        [](const Bullet &b) { return !b.active; }),
-                         player.bullets.end());
+                                        [](const Bullet &b)
+    {
+        return !b.active;
+    }),
+    player.bullets.end());
 
     for (auto& enemy : enemies)
     {
         enemy.bullets.erase(std::remove_if(enemy.bullets.begin(), enemy.bullets.end(),
-                                           [](const Bullet &b) { return !b.active; }),
-                            enemy.bullets.end());
+                                           [](const Bullet &b)
+        {
+            return !b.active;
+        }),
+        enemy.bullets.end());
     }
 
     // Nếu không còn kẻ địch => thắng game
     if (enemies.empty())
     {
+        //running = false;
+        SDL_Texture* imageTexture = IMG_LoadTexture(renderer, "win.png");
+        SDL_RenderCopy(renderer, imageTexture, nullptr, nullptr);
+        SDL_DestroyTexture(imageTexture);
+        SDL_RenderPresent(renderer);
+        SDL_Delay(5000);
         running = false;
     }
 }
@@ -248,12 +268,28 @@ void Game :: render()
 
 void Game :: run()
 {
+    const int FPS = 60;
+    const int frameDelay = 1000 / FPS; // Mỗi frame mất khoảng 16.67ms
+
+    Uint32 frameStart;
+    int frameTime;
+
     while (running)
     {
+        frameStart = SDL_GetTicks(); // Lấy thời gian bắt đầu frame
+
         render();
         update();
         handleEvents();
-        SDL_Delay(16);
+
+        // Tính thời gian xử lý 1 frame
+        frameTime = SDL_GetTicks() - frameStart;
+
+        // Nếu frame xử lý quá nhanh, tạm dừng để đảm bảo 60 FPS
+        if (frameTime < frameDelay)
+        {
+            SDL_Delay(frameDelay - frameTime);
+        }
     }
 }
 

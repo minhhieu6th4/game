@@ -86,5 +86,6 @@ void PlayerTank ::render(SDL_Renderer *renderer)
     {
         bullet.render(renderer);
     }
+    SDL_DestroyTexture(imageTexture);
 }
 

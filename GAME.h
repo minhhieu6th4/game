@@ -26,7 +26,7 @@ public:
 	void run();
 	vector <Wall> walls;
 	PlayerTank player = PlayerTank(((MAP_WIDTH - 1) / 3 ) * TILE_SIZE , ((MAP_HEIGHT - 1) / 3 ) * TILE_SIZE);
-	int enemyNumber = 3;
+	int enemyNumber = 5;
 	vector <EnemyTank> enemies;
 	void spawnEnemies();
 	void handleEvents();
