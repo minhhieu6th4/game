@@ -39,9 +39,10 @@ void PlayerTank :: move(int dx, int dy, const vector<Wall> &walls)
         rect.y = y;
     }
     if (dx == 0 && dy == -5) angle = 0.0;   // Lên
-    if (dx == 0 && dy == 5)  angle = 180.0; // Xuống
-    if (dx == -5 && dy == 0) angle = 270.0; // Trái
-    if (dx == 5 && dy == 0)  angle = 90.0;  // Phải
+    if (dx  == 0 && dy  == 5)  angle = 180.0; // Xuống
+    if (dx  == -5 && dy  == 0) angle = 270.0; // Trái
+    if (dx  == 5 && dy  == 0)  angle = 90.0;  // Phải
+
 }
 
 void PlayerTank::shoot()
@@ -58,6 +59,13 @@ void PlayerTank::shoot()
     int bulletDirY = (dirX == 0 && dirY == 0) ? -5 : dirY;
 
     bullets.push_back(Bullet(x + TILE_SIZE / 2 - 5, y + TILE_SIZE / 2 - 5, bulletDirX, bulletDirY));
+
+    Mix_Chunk* shootSound =  Mix_LoadWAV("bullet.wav");
+    if (!shootSound) {
+        cout << "Không thể tải hiệu ứng âm thanh: " << Mix_GetError() << endl;
+    }
+    Mix_PlayChannel(-1,shootSound,0);
+
 }
 
 
@@ -80,7 +88,6 @@ void PlayerTank ::render(SDL_Renderer *renderer)
 //     SDL_SetRenderDrawColor(renderer,255,255,0,255);
 //     SDL_RenderFillRect(renderer, &rect);
     SDL_Texture* imageTexture = IMG_LoadTexture(renderer, "upplayer.png");
-//    SDL_RenderCopy(renderer, imageTexture, nullptr, &rect);
     SDL_RenderCopyEx(renderer, imageTexture, nullptr, &rect, angle, nullptr, SDL_FLIP_NONE);
     for (auto &bullet : bullets)
     {

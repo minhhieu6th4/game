@@ -16,7 +16,7 @@ const int SCREEN_HEIGHT = 600;
 const int TILE_SIZE = 40;
 const int MAP_WIDTH = SCREEN_WIDTH/ TILE_SIZE;
 const int MAP_HEIGHT = SCREEN_HEIGHT/ TILE_SIZE;
-
+static Mix_Chunk* shootSound =  Mix_LoadWAV("bullet.wav");
 
 class Game
 {
@@ -26,7 +26,7 @@ public:
 	void run();
 	vector <Wall> walls;
 	PlayerTank player = PlayerTank(((MAP_WIDTH - 1) / 3 ) * TILE_SIZE , ((MAP_HEIGHT - 1) / 3 ) * TILE_SIZE);
-	int enemyNumber = 5;
+	int enemyNumber = 4;
 	vector <EnemyTank> enemies;
 	void spawnEnemies();
 	void handleEvents();

@@ -1,4 +1,5 @@
 #include "game.h"
+#include "player.h"
 #include <algorithm>
 
 using namespace std;
@@ -33,6 +34,17 @@ Game:: Game()
         cerr << "Renderer could not be created! SDL_Error: ";
         running = false;
     }
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+        cout << "SDL không thể khởi tạo! SDL_Error: " << SDL_GetError() << endl;
+        running = false;
+    }
+
+    // Khởi tạo SDL_mixer với tần số 44100 Hz, định dạng 16-bit stereo, 2 kênh, và buffer 2048
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        cout << "SDL_mixer không thể khởi tạo! Mix_Error: " << Mix_GetError() << endl;
+        running = false;
+    }
+
     generateWall();
     spawnEnemies();
 }
@@ -119,12 +131,21 @@ void Game::update()
         {
             if (SDL_HasIntersection(&bullet.rect, &player.rect))
             {
-                SDL_Texture* imageTexture = IMG_LoadTexture(renderer, "lose.png");
-                SDL_RenderCopy(renderer, imageTexture, nullptr, nullptr);
-                SDL_DestroyTexture(imageTexture);
-                SDL_RenderPresent(renderer);
-                SDL_Delay(5000);
-                running = false;  // Kết thúc trò chơi
+                SDL_Event event;
+                while (running)
+                {
+                    while (SDL_PollEvent(&event))
+                    {
+                        if (event.type == SDL_QUIT) running = false;
+                        if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) running = false;
+                    }
+
+                    SDL_RenderClear(renderer);
+                    SDL_Texture* imageTexture = IMG_LoadTexture(renderer, "lose.png");
+                    SDL_RenderCopy(renderer, imageTexture, nullptr, nullptr);
+                    SDL_DestroyTexture(imageTexture);
+                    SDL_RenderPresent(renderer);
+                }
                 return;
             }
         }
@@ -186,18 +207,24 @@ void Game::update()
     // Nếu không còn kẻ địch => thắng game
     if (enemies.empty())
     {
-        //running = false;
-        SDL_Texture* imageTexture = IMG_LoadTexture(renderer, "win.png");
-        SDL_RenderCopy(renderer, imageTexture, nullptr, nullptr);
-        SDL_DestroyTexture(imageTexture);
-        SDL_RenderPresent(renderer);
-        SDL_Delay(5000);
-        running = false;
+        SDL_Event event;
+        while (running)
+        {
+            while (SDL_PollEvent(&event))
+            {
+                if (event.type == SDL_QUIT) running = false;
+                if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) running = false;
+            }
+
+            SDL_RenderClear(renderer);
+            SDL_Texture* imageTexture = IMG_LoadTexture(renderer, "win.png");
+            SDL_RenderCopy(renderer, imageTexture, nullptr, nullptr);
+            SDL_DestroyTexture(imageTexture);
+            SDL_RenderPresent(renderer);
+        }
+        return;
     }
 }
-
-
-
 
 
 void Game :: handleEvents()
@@ -295,6 +322,8 @@ void Game :: run()
 
 Game :: ~Game()
 {
+    Mix_FreeChunk(shootSound);
+    Mix_CloseAudio(); // Đóng SDL_mixer
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

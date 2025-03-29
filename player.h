@@ -5,6 +5,7 @@
 #include "bullet.h"
 #include <vector>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 
 using namespace std;
 
@@ -22,6 +23,7 @@ public:
     void shoot();
     void updateBullets();
     double angle = 0.0;
+  //  Mix_Chunk* shootSound =  Mix_LoadWAV("bullet.wav");
 private:
     Uint32 lastShotTime = 0; // Lưu thời gian lần bắn trước
     const Uint32 shotCooldown = 500; // Thời gian chờ giữa 2 lần bắn (ms)
