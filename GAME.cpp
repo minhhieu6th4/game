@@ -113,9 +113,16 @@ void Game::update()
         {
             if (enemy.active && SDL_HasIntersection(&bullet.rect, &enemy.rect))
             {
+                Mix_Chunk* shootSound =  Mix_LoadWAV("noo.wav");
+                if (!shootSound)
+                {
+                    cout << "Không thể tải hiệu ứng âm thanh: " << Mix_GetError() << endl;
+                }
+                Mix_PlayChannel(-1,shootSound,0);
                 enemy.active = false;   // Kẻ địch bị tiêu diệt
                 bullet.active = false;  // Viên đạn biến mất
                 break; // Dừng kiểm tra sau khi trúng 1 mục tiêu
+
             }
         }
     }

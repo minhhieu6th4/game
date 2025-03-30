@@ -55,16 +55,15 @@ void PlayerTank::shoot()
     lastShotTime = currentTime; // Cập nhật thời gian bắn mới
 
     // Nếu chưa di chuyển, đặt hướng mặc định (bắn lên)
-    int bulletDirX = (dirX == 0 && dirY == 0) ? 0 : dirX;
-    int bulletDirY = (dirX == 0 && dirY == 0) ? -5 : dirY;
+//    int bulletDirX = (dirX == 0 && dirY == 0) ? 0 : dirX;
+//    int bulletDirY = (dirX == 0 && dirY == 0) ? -5 : dirY;
+    int speedMultiplier = 2; // Tăng tốc độ đạn lên gấp đôi
+    int bulletDirX = (dirX == 0 && dirY == 0) ? 0 : dirX * speedMultiplier;
+    int bulletDirY = (dirX == 0 && dirY == 0) ? -5 * speedMultiplier : dirY * speedMultiplier;
 
     bullets.push_back(Bullet(x + TILE_SIZE / 2 - 5, y + TILE_SIZE / 2 - 5, bulletDirX, bulletDirY));
 
-//    Mix_Chunk* shootSound =  Mix_LoadWAV("bullet.wav");
-//    if (!shootSound) {
-//        cout << "Không thể tải hiệu ứng âm thanh: " << Mix_GetError() << endl;
-//    }
-//    Mix_PlayChannel(-1,shootSound,0);
+
 
 }
 
