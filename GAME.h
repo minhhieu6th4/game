@@ -8,6 +8,7 @@
 #include "player.h"
 #include "EnemyTank.h"
 #include "bullet.h"
+#include <SDL_mixer.h>
 
 using namespace std;
 
@@ -16,7 +17,6 @@ const int SCREEN_HEIGHT = 600;
 const int TILE_SIZE = 40;
 const int MAP_WIDTH = SCREEN_WIDTH/ TILE_SIZE;
 const int MAP_HEIGHT = SCREEN_HEIGHT/ TILE_SIZE;
-static Mix_Chunk* shootSound =  Mix_LoadWAV("bullet.wav");
 
 class Game
 {
@@ -31,6 +31,7 @@ public:
 	void spawnEnemies();
 	void handleEvents();
 	void generateWall();
+	void showSplashScreen();
 	~Game();
 	SDL_Window* window;
 	SDL_Renderer* renderer;

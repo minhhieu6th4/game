@@ -60,11 +60,11 @@ void PlayerTank::shoot()
 
     bullets.push_back(Bullet(x + TILE_SIZE / 2 - 5, y + TILE_SIZE / 2 - 5, bulletDirX, bulletDirY));
 
-    Mix_Chunk* shootSound =  Mix_LoadWAV("bullet.wav");
-    if (!shootSound) {
-        cout << "Không thể tải hiệu ứng âm thanh: " << Mix_GetError() << endl;
-    }
-    Mix_PlayChannel(-1,shootSound,0);
+//    Mix_Chunk* shootSound =  Mix_LoadWAV("bullet.wav");
+//    if (!shootSound) {
+//        cout << "Không thể tải hiệu ứng âm thanh: " << Mix_GetError() << endl;
+//    }
+//    Mix_PlayChannel(-1,shootSound,0);
 
 }
 

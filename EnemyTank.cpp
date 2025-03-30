@@ -82,6 +82,7 @@ void EnemyTank :: shoot()
     }
     shootDelay = 3;
     bullets.push_back(Bullet(x + TILE_SIZE / 2 - 5, y + TILE_SIZE / 2 - 5, this->dirX, this->dirY));
+
 }
 
 void EnemyTank::updateBullets()

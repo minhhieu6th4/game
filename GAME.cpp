@@ -34,13 +34,15 @@ Game:: Game()
         cerr << "Renderer could not be created! SDL_Error: ";
         running = false;
     }
-    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+    if (SDL_Init(SDL_INIT_AUDIO) < 0)
+    {
         cout << "SDL không thể khởi tạo! SDL_Error: " << SDL_GetError() << endl;
         running = false;
     }
 
     // Khởi tạo SDL_mixer với tần số 44100 Hz, định dạng 16-bit stereo, 2 kênh, và buffer 2048
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+    {
         cout << "SDL_mixer không thể khởi tạo! Mix_Error: " << Mix_GetError() << endl;
         running = false;
     }
@@ -194,6 +196,7 @@ void Game::update()
     }),
     player.bullets.end());
 
+
     for (auto& enemy : enemies)
     {
         enemy.bullets.erase(std::remove_if(enemy.bullets.begin(), enemy.bullets.end(),
@@ -254,6 +257,12 @@ void Game :: handleEvents()
                 break;
             case SDLK_SPACE :
                 player.shoot();
+                Mix_Chunk* shootSound =  Mix_LoadWAV("bullet.wav");
+                if (!shootSound)
+                {
+                    cout << "Không thể tải hiệu ứng âm thanh: " << Mix_GetError() << endl;
+                }
+                Mix_PlayChannel(-1,shootSound,0);
                 break;
             }
         }
@@ -292,9 +301,40 @@ void Game :: render()
     SDL_RenderPresent(renderer);
 }
 
+void Game::showSplashScreen() {
+    SDL_Texture* splashTexture = IMG_LoadTexture(renderer, "splash.png");
+    if (!splashTexture) {
+        std::cerr << "Không thể tải ảnh splash! SDL_Error: " << IMG_GetError() << std::endl;
+        return;
+    }
+
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, splashTexture, nullptr, nullptr);
+    SDL_RenderPresent(renderer);
+
+    SDL_Event e;
+    bool startGame = false;
+    while (!startGame) {
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) {
+                running = false;
+                return;
+            }
+            if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE) {
+                startGame = true;
+            }
+        }
+    }
+
+    SDL_DestroyTexture(splashTexture);
+}
+
+
 
 void Game :: run()
 {
+    showSplashScreen();
+
     const int FPS = 60;
     const int frameDelay = 1000 / FPS; // Mỗi frame mất khoảng 16.67ms
 
@@ -322,7 +362,7 @@ void Game :: run()
 
 Game :: ~Game()
 {
-    Mix_FreeChunk(shootSound);
+    //Mix_FreeChunk(shootSound);
     Mix_CloseAudio(); // Đóng SDL_mixer
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
